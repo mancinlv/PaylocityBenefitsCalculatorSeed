@@ -26,7 +26,6 @@ builder.Services.AddCors(options =>
             policy.WithOrigins("http://localhost:3000", "http://localhost");
         });
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
