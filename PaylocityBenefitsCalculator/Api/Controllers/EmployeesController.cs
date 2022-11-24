@@ -1,4 +1,5 @@
-﻿using Api.Dtos.Dependent;
+﻿using Api.Domain.Enums;
+using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
 using Api.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -87,13 +88,13 @@ namespace Api.Controllers
                     }
                 }
             };
-            
+
             var result = new ApiResponse<List<GetEmployeeDto>>
             {
                 Data = employees,
                 Success = true
             };
-            
+
             return result;
         }
 
@@ -101,7 +102,7 @@ namespace Api.Controllers
         [SwaggerOperation(Summary = "Add employee")]
         [HttpPost]
         public async Task<ActionResult<ApiResponse<List<AddEmployeeDto>>>> AddEmployee(AddEmployeeDto newEmployee)
-        { 
+        {
             throw new NotImplementedException();
         }
 
@@ -120,10 +121,17 @@ namespace Api.Controllers
         }
 
         [HttpGet("{id}/paycheck")]
-        public async Task<ActionResult<ApiResponse> GetPaycheck(int employeeId)
+        public async Task<ActionResult<ApiResponse<decimal>>> GetPaycheck(int employeeId)
         {
-        
-            
+            throw new NotImplementedException();
+        }
+
+        // Might put this in another controller
+        [SwaggerOperation(Summary = "Get all dependents for given employee")]
+        [HttpGet("{id}/dependents")]
+        public async Task<ActionResult<ApiResponse<List<GetDependentDto>>>> GetAllEmployeeDependents(int employeeId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Api.Models;
+﻿using Api.Domain.Enums;
 
 namespace Api.Dtos.Dependent
 {    
