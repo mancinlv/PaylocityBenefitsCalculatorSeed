@@ -23,7 +23,7 @@ namespace Application
         Task<IList<GetDependentDto>> DeleteAsync(int id);
     }
 
-    public class DependentService
+    public class DependentService : IDependentService
     {
         public DependentService()
         {

@@ -1,12 +1,10 @@
 ﻿using Api.Domain.Dependent.Interfaces;
 using Api.Domain.Dependent.Models;
-using Api.Domain.Employee.Models;
 using Api.Domain.Enums;
-using System.Collections.Generic;
 
 namespace Api.Infrastructure
 {
-    public class DependentRepository : IDependentInterface
+    public class DependentRepository : IDependentRepository
     {
         public IList<DependentEntity> AllDependents = new List<DependentEntity>
         {
@@ -58,9 +56,9 @@ namespace Api.Infrastructure
             return AllDependents.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<DependentEntity>> GetAllAsyncByEmployeeId(int employeeId)
+        public async Task<IList<DependentEntity>> GetAllByEmployeeIdAsync(int employeeId)
         {
-            return AllDependents.Where(x => x.EmployeeId == employeeId);
+            return AllDependents.Where(x => x.EmployeeId == employeeId)?.ToList();
         }
     }
 }

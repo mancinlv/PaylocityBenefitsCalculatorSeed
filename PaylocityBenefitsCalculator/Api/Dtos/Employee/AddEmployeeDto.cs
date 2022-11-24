@@ -8,6 +8,6 @@ namespace Api.Dtos.Employee
         public string? LastName { get; set; }
         public decimal Salary { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public ICollection<AddDependentDto>? Dependents { get; set; }
+        public IList<AddDependentDto>? Dependents { get; set; }
     }
 }

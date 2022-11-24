@@ -2,10 +2,10 @@
 
 namespace Api.Domain.Dependent.Interfaces
 {
-    public interface IDependentInterface
+    public interface IDependentRepository
     {
         Task<IList<DependentEntity>> GetAllAsync();
         Task<DependentEntity> GetAsync(int id);
-        Task<IEnumerable<DependentEntity>> GetAllAsyncByEmployeeId(int employeeId);
+        Task<IList<DependentEntity>> GetAllByEmployeeIdAsync(int employeeId);
     }
 }

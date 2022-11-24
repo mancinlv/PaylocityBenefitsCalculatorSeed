@@ -1,6 +1,10 @@
+using Api.Domain.Dependent.Interfaces;
+using Api.Domain.Dependent.Models;
 using Api.Domain.Employee.Interfaces;
 using Api.Domain.Employee.Models;
+using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
+using Api.Infrastructure;
 
 namespace Application
 {
@@ -8,7 +12,7 @@ namespace Application
     {
         Task<GetEmployeeDto> GetAsync(int id);
         Task<IList<GetEmployeeDto>> GetAllAsync();
-        Task<IList<AddEmployeeDto>> AddAsync(AddEmployeeDto employee);
+        Task<IList<GetEmployeeDto>> AddAsync(AddEmployeeDto employee);
         Task<IList<GetEmployeeDto>> UpdateAsync(int id, UpdateEmployeeDto employee);
         Task<IList<GetEmployeeDto>> DeleteAsync(int id);
     }
@@ -16,27 +20,100 @@ namespace Application
     public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        private readonly IDependentRepository _dependentRepository;
+        public EmployeeService(IEmployeeRepository employeeRepository,
+            IDependentRepository dependentRepository)
         {
             _employeeRepository = employeeRepository;
+            _dependentRepository = dependentRepository;
         }
 
         public async Task<GetEmployeeDto> GetAsync(int id)
         {
-            var employee = await _employeeRepository.GetAsync(id);
-            return new GetEmployeeDto();
+            EmployeeEntity employee = await _employeeRepository.GetAsync(id);
+            var dependents = await _dependentRepository.GetAllByEmployeeIdAsync(id);
+            //TODO move mapping
+            //TODO fix list type https://medium.com/developers-arena/ienumerable-vs-icollection-vs-ilist-vs-iqueryable-in-c-2101351453db
+            return ToEmployeeDto(employee, dependents);
+        }
+
+        private GetEmployeeDto ToEmployeeDto(EmployeeEntity employee, IEnumerable<DependentEntity> dependents)
+        {
+            return new GetEmployeeDto
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Salary = employee.Salary,
+                DateOfBirth = employee.DateOfBirth,
+                Dependents = dependents?.Select(x => ToDependentDto(x))?.ToList()
+            };
+        }
+
+        private GetDependentDto ToDependentDto(DependentEntity x)
+        {
+            return new GetDependentDto
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                DateOfBirth = x.DateOfBirth,
+                Relationship = x.Relationship
+            };
+        }
+
+        //choosing to return empty list rather than null
+        private IList<GetDependentDto>? MapDependents(IList<AddDependentDto> dependents, int maxDependentId)
+        {
+            var dependentsDto = new List<GetDependentDto>();
+            if (dependents == null) return dependentsDto;
+            foreach (var dependent in dependents)
+            {
+                var d = new GetDependentDto
+                {
+                    Id = ++maxDependentId,
+                    FirstName = dependent.FirstName,
+                    LastName = dependent.LastName,
+                    DateOfBirth = dependent.DateOfBirth,
+                    Relationship = dependent.Relationship
+                };
+                dependentsDto.Add(d);
+            }
+            return dependentsDto;
+        }
+
+
+        //would never have these ids set this way w/ db
+        private GetEmployeeDto ToEmployeeDto(AddEmployeeDto employee, int maxEmployeeId, int maxDependentId)
+        {
+            return new GetEmployeeDto
+            {
+                Id = ++maxEmployeeId,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                DateOfBirth = employee.DateOfBirth,
+                Salary = employee.Salary,
+                Dependents = MapDependents(employee.Dependents, maxDependentId)
+            };
         }
 
         public async Task<IList<GetEmployeeDto>> GetAllAsync()
         {
-            throw new NotImplementedException();
-            //var employees = await _employeeRepository.GetAllAsync();
+            IList<EmployeeEntity> employees = await _employeeRepository.GetAllAsync();
+            var dependents = await _dependentRepository.GetAllAsync();
+            return employees.Select(x => ToEmployeeDto(x, dependents.Where(d=> d.EmployeeId == x.Id))).ToList();
         }
 
-        public async Task<IList<AddEmployeeDto>> AddAsync(AddEmployeeDto employee)
+        public async Task<IList<GetEmployeeDto>> AddAsync(AddEmployeeDto employee)
         {
-            throw new NotImplementedException();
+            IList<EmployeeEntity> employees = await _employeeRepository.GetAllAsync();
+            var dependents = await _dependentRepository.GetAllAsync();
+            var employeesWithDependents = employees.Select(x => ToEmployeeDto(x, dependents.Where(d => d.EmployeeId == x.Id))).ToList();
+            employeesWithDependents.Add(ToEmployeeDto(employee, employees.Max(x=>x.Id), dependents.Max(y => y.Id)));
+            return employeesWithDependents;
         }
+
+
 
         public async Task<IList<GetEmployeeDto>> UpdateAsync(int id, UpdateEmployeeDto employee)
         {
@@ -45,7 +122,10 @@ namespace Application
 
         public async Task<IList<GetEmployeeDto>> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            IList<EmployeeEntity> employees = await _employeeRepository.GetAllAsync();
+            var dependents = await _dependentRepository.GetAllAsync();
+            var employeesWithDependents = employees.Select(x => ToEmployeeDto(x, dependents.Where(d => d.EmployeeId == x.Id))).ToList();
+            return employeesWithDependents.Where(x => x.Id != id).ToList();
         }
 
         public async Task<decimal> GetBiMonthlyPaycheckAsync(int employeeId)

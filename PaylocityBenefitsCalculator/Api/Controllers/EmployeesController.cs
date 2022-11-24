@@ -2,6 +2,7 @@
 using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
 using Api.Models;
+using Application;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -11,85 +12,35 @@ namespace Api.Controllers
     [Route("api/v1/[controller]")]
     public class EmployeesController : ControllerBase
     {
+        private readonly IEmployeeService _employeeService;
+
+        public EmployeesController(IEmployeeService employeeService)
+        {
+            _employeeService = employeeService;
+        }
+
         [SwaggerOperation(Summary = "Get employee by id")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponse<GetEmployeeDto>>> Get(int id)
         {
-            throw new NotImplementedException();
+            var employee = await _employeeService.GetAsync(id);
+
+            //TODO handle base response in base controller
+            var result = new ApiResponse<GetEmployeeDto>
+            {
+                Data = employee,
+                Success = true
+            };
+
+            return result;
         }
 
         [SwaggerOperation(Summary = "Get all employees")]
         [HttpGet("")]
-        public async Task<ActionResult<ApiResponse<List<GetEmployeeDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> GetAll()
         {
-            //task: use a more realistic production approach
-            var employees = new List<GetEmployeeDto>
-            {
-                new()
-                {
-                    Id = 1,
-                    FirstName = "LeBron",
-                    LastName = "James",
-                    Salary = 75420.99m,
-                    DateOfBirth = new DateTime(1984, 12, 30)
-                },
-                new()
-                {
-                    Id = 2,
-                    FirstName = "Ja",
-                    LastName = "Morant",
-                    Salary = 92365.22m,
-                    DateOfBirth = new DateTime(1999, 8, 10),
-                    Dependents = new List<GetDependentDto>
-                    {
-                        new()
-                        {
-                            Id = 1,
-                            FirstName = "Spouse",
-                            LastName = "Morant",
-                            Relationship = Relationship.Spouse,
-                            DateOfBirth = new DateTime(1998, 3, 3)
-                        },
-                        new()
-                        {
-                            Id = 2,
-                            FirstName = "Child1",
-                            LastName = "Morant",
-                            Relationship = Relationship.Child,
-                            DateOfBirth = new DateTime(2020, 6, 23)
-                        },
-                        new()
-                        {
-                            Id = 3,
-                            FirstName = "Child2",
-                            LastName = "Morant",
-                            Relationship = Relationship.Child,
-                            DateOfBirth = new DateTime(2021, 5, 18)
-                        }
-                    }
-                },
-                new()
-                {
-                    Id = 3,
-                    FirstName = "Michael",
-                    LastName = "Jordan",
-                    Salary = 143211.12m,
-                    DateOfBirth = new DateTime(1963, 2, 17),
-                    Dependents = new List<GetDependentDto>
-                    {
-                        new()
-                        {
-                            Id = 4,
-                            FirstName = "DP",
-                            LastName = "Jordan",
-                            Relationship = Relationship.DomesticPartner,
-                            DateOfBirth = new DateTime(1974, 1, 2)
-                        }
-                    }
-                }
-            };
-
-            var result = new ApiResponse<List<GetEmployeeDto>>
+            var employees = await _employeeService.GetAllAsync();
+            var result = new ApiResponse<IList<GetEmployeeDto>>
             {
                 Data = employees,
                 Success = true
@@ -99,13 +50,22 @@ namespace Api.Controllers
         }
 
         ///in real life with state management on client side, i would not return all employees here. would just return the added employee
+        // changed response to be GetEmployeeDto so that Ids are available
         [SwaggerOperation(Summary = "Add employee")]
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<List<AddEmployeeDto>>>> AddEmployee(AddEmployeeDto newEmployee)
+        public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> AddEmployee(AddEmployeeDto newEmployee)
         {
-            throw new NotImplementedException();
+            var employees = await _employeeService.AddAsync(newEmployee);
+            var result = new ApiResponse<IList<GetEmployeeDto>>
+            {
+                Data = employees,
+                Success = true
+            };
+
+            return result;
         }
 
+        //if employee does not exist, handle
         [SwaggerOperation(Summary = "Update employee")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResponse<GetEmployeeDto>>> UpdateEmployee(int id, UpdateEmployeeDto updatedEmployee)
@@ -113,11 +73,19 @@ namespace Api.Controllers
             throw new NotImplementedException();
         }
 
+        //TODO if employee does not exist, handle
         [SwaggerOperation(Summary = "Delete employee")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ApiResponse<List<GetEmployeeDto>>>> DeleteEmployee(int id)
+        public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> DeleteEmployee(int id)
         {
-            throw new NotImplementedException();
+            var employees = await _employeeService.DeleteAsync(id);
+            var result = new ApiResponse<IList<GetEmployeeDto>>
+            {
+                Data = employees,
+                Success = true
+            };
+
+            return result;
         }
 
         [HttpGet("{id}/paycheck")]
