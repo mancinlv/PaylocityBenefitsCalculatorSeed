@@ -11,7 +11,7 @@ namespace Api.Domain.Dependent.Models
         // public Employee? Employee { get; set; } no
 
 
-        internal bool IsOverFiftyYears()
+        public bool IsOverFiftyYears()
         {
             DateTime today = DateTime.Today;
             int age = DateTime.Now.Year - DateOfBirth.Year;
