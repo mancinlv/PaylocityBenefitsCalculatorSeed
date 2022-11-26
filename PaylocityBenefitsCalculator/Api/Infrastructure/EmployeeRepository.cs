@@ -41,5 +41,10 @@ namespace Infrastructure
         public async Task<EmployeeEntity> GetAsync(int id){
             return AllEmployees.FirstOrDefault(x => x.Id == id);
         }
+
+        public async Task<IList<EmployeeEntity>> DeleteAsync(int id)
+        {
+            return AllEmployees.Where(x => x.Id != id).ToList();
+        }
     }
 }

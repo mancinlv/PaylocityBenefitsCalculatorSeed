@@ -56,6 +56,32 @@ namespace Api.Infrastructure
             return AllDependents.FirstOrDefault(x => x.Id == id);
         }
 
+        public async Task<IList<DependentEntity>> AddAsync(DependentEntity dependent)
+        {
+            var maxId = AllDependents.Max(x => x.Id);
+            dependent.Id = maxId;
+            AllDependents.Add(dependent);
+            return AllDependents;
+        }
+
+        public async Task<IList<DependentEntity>> UpdateAsync(DependentEntity dependent)
+        {
+            var index = AllDependents.ToList().FindIndex(x => x.Id == dependent.Id);
+            if(index != -1)
+            {
+                AllDependents[index].FirstName = dependent.FirstName;
+                AllDependents[index].LastName = dependent.LastName;
+                AllDependents[index].Relationship = dependent.Relationship;
+            }
+            return AllDependents;
+        }
+
+        public async Task<IList<DependentEntity>> DeleteAsync(int id)
+        {
+            var dependents = AllDependents.Where(x => x.Id != id).ToList();
+            return dependents;
+        }
+
         public async Task<IList<DependentEntity>> GetAllByEmployeeIdAsync(int employeeId)
         {
             return AllDependents.Where(x => x.EmployeeId == employeeId)?.ToList();

@@ -1,5 +1,4 @@
-﻿using Api.Domain.Enums;
-using Api.Dtos.Dependent;
+﻿using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
 using Api.Models;
 using Application;
@@ -26,51 +25,35 @@ namespace Api.Controllers
             var employee = await _employeeService.GetAsync(id);
 
             //TODO handle base response in base controller
-            var result = new ApiResponse<GetEmployeeDto>
-            {
-                Data = employee,
-                Success = true
-            };
-
-            return result;
+            return HandleResponse(employee);
         }
 
+        
         [SwaggerOperation(Summary = "Get all employees")]
         [HttpGet("")]
         public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> GetAll()
         {
             var employees = await _employeeService.GetAllAsync();
-            var result = new ApiResponse<IList<GetEmployeeDto>>
-            {
-                Data = employees,
-                Success = true
-            };
-
-            return result;
+            return HandleResponse(employees);
         }
 
-        ///in real life with state management on client side, i would not return all employees here. would just return the added employee
-        // changed response to be GetEmployeeDto so that Ids are available
+        ///in real life with state management on client side, i would not return all employees here. would just return the added employee -- LVM
+        // changed response to be GetEmployeeDto so that Ids are available -- LVM
         [SwaggerOperation(Summary = "Add employee")]
         [HttpPost]
         public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> AddEmployee(AddEmployeeDto newEmployee)
         {
             var employees = await _employeeService.AddAsync(newEmployee);
-            var result = new ApiResponse<IList<GetEmployeeDto>>
-            {
-                Data = employees,
-                Success = true
-            };
-
-            return result;
+            return HandleResponse(employees);
         }
 
-        //if employee does not exist, handle
+        // returning all atm for front end. would not do this w/ more time
         [SwaggerOperation(Summary = "Update employee")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<ApiResponse<GetEmployeeDto>>> UpdateEmployee(int id, UpdateEmployeeDto updatedEmployee)
+        public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> UpdateEmployee(int id, UpdateEmployeeDto updatedEmployee)
         {
-            throw new NotImplementedException();
+            var employees = await _employeeService.UpdateAsync(id, updatedEmployee);
+            return HandleResponse(employees);
         }
 
         //TODO if employee does not exist, handle
@@ -79,19 +62,14 @@ namespace Api.Controllers
         public async Task<ActionResult<ApiResponse<IList<GetEmployeeDto>>>> DeleteEmployee(int id)
         {
             var employees = await _employeeService.DeleteAsync(id);
-            var result = new ApiResponse<IList<GetEmployeeDto>>
-            {
-                Data = employees,
-                Success = true
-            };
-
-            return result;
+            return HandleResponse(employees);
         }
 
         [HttpGet("{id}/paycheck")]
-        public async Task<ActionResult<ApiResponse<decimal>>> GetPaycheck(int employeeId)
+        public async Task<ActionResult<ApiResponse<PaycheckDto>>> GetPaycheck(int id)
         {
-            throw new NotImplementedException();
+            var paycheck = await _employeeService.GetBiMonthlyPaycheckAsync(id);
+            return HandleResponse(paycheck);
         }
 
         // Might put this in another controller
@@ -101,5 +79,16 @@ namespace Api.Controllers
         {
             throw new NotImplementedException();
         }
+
+        //TODO moved to shared base controller
+        private static ApiResponse<T> HandleResponse<T>(T data)
+        {
+            return new ApiResponse<T>
+            {
+                Data = data,
+                Success = true
+            };
+        }
+
     }
 }

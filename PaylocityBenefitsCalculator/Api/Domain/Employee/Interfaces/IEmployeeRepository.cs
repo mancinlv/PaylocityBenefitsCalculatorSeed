@@ -6,5 +6,6 @@ namespace Api.Domain.Employee.Interfaces
     {
         Task<EmployeeEntity> GetAsync(int id);
         Task<IList<EmployeeEntity>> GetAllAsync();
+        Task<IList<EmployeeEntity>> DeleteAsync(int id);
     }
 }

@@ -6,6 +6,9 @@ namespace Api.Domain.Dependent.Interfaces
     {
         Task<IList<DependentEntity>> GetAllAsync();
         Task<DependentEntity> GetAsync(int id);
+        Task<IList<DependentEntity>> AddAsync(DependentEntity dependent);
+        Task<IList<DependentEntity>> UpdateAsync(DependentEntity dependent);
+        Task<IList<DependentEntity>> DeleteAsync(int id);
         Task<IList<DependentEntity>> GetAllByEmployeeIdAsync(int employeeId);
     }
 }
