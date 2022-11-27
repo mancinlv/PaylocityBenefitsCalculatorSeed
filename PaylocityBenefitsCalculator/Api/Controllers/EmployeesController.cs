@@ -72,7 +72,7 @@ namespace Api.Controllers
             return HandleResponse(paycheck);
         }
 
-        // Might put this in another controller
+        //Might put this in another controller
         [SwaggerOperation(Summary = "Get all dependents for given employee")]
         [HttpGet("{id}/dependents")]
         public async Task<ActionResult<ApiResponse<List<GetDependentDto>>>> GetAllEmployeeDependents(int employeeId)

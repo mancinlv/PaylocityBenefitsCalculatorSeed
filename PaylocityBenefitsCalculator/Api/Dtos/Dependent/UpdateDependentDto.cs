@@ -2,11 +2,8 @@
 
 namespace Api.Dtos.Dependent
 {
-    public class UpdateDependentDto
+    public class UpdateDependentDto : BasePersonDto
     {
-        public string? FirstName { get; set; }
-        public string? LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
         public Relationship Relationship { get; set; }
     }
 }

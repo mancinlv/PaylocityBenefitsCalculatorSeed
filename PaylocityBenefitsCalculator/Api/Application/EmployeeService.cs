@@ -55,7 +55,6 @@ namespace Application
 
 
         // Assuming that employee id does exist. Otherwise would handle not found/ null with some type of message -- LVM
-        // Given the nullable properities of the Dto, I am going to make this a Patch
         public async Task<IList<GetEmployeeDto>> UpdateAsync(int id, UpdateEmployeeDto employee)
         {
             IList<EmployeeEntity> employees = await _employeeRepository.GetAllAsync();
@@ -67,6 +66,7 @@ namespace Application
                 employeesWithDependents[employeeIndex].FirstName = employee.FirstName;
                 employeesWithDependents[employeeIndex].LastName = employee.LastName;
                 employeesWithDependents[employeeIndex].Salary = employee.Salary;
+                employeesWithDependents[employeeIndex].DateOfBirth = employee.DateOfBirth;
             }
             return employeesWithDependents;
         }
@@ -103,17 +103,6 @@ namespace Application
                 TotalBenefitsCost = totalCost
             };
             return paycheck;
-
-            // Maria + 2; Salary 100,000, 32 years
-            // Maria base => 1000 x 12 / 26 = 461
-            // Dependents base => 600 x 2 x 12 / 26 = 553.846 (what do do here?! round up?!)
-            // $2000 extra x year (/26) = 76.923
-            // $0 no old age
-            // = $1091.769
-
-            // 1000 x 12 / 26
-            // (600 x n) x 12 / 26=
-            // 200 x 12 / 26
         }
 
         //would never have these ids set this way w/ db

@@ -98,7 +98,7 @@ namespace ApiTests.UnitTests.Domain
         {
             var originalDependent = new DependentEntity { Relationship = Relationship.Child };
             var newDependent = new DependentEntity { Relationship = Relationship.Spouse };
-            var acutal = newDependent.CanAddRelationshipType(new List<DependentEntity>());
+            var acutal = newDependent.CanAddRelationshipType(new List<DependentEntity> { originalDependent });
             acutal.Should().BeTrue();
         }
     }

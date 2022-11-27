@@ -1,5 +1,6 @@
 ﻿using Api.Dtos.Dependent;
 using Api.Models;
+using Application;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -9,40 +10,61 @@ namespace Api.Controllers
     [Route("api/v1/[controller]")]
     public class DependentsController : ControllerBase
     {
+        private readonly IDependentService _dependentsService;
+        public DependentsController(IDependentService dependentsService)
+        {
+            _dependentsService = dependentsService;
+        }
+
         [SwaggerOperation(Summary = "Get dependent by id")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ApiResponse<GetDependentDto>>> Get(int id)
         {
-            throw new NotImplementedException();
+            var dependent = await _dependentsService.GetAsync(id);
+            return HandleResponse(dependent);
         }
 
         // TODO want to get them by employee id? 
         [SwaggerOperation(Summary = "Get all dependents")]
         [HttpGet("")]
-        public async Task<ActionResult<ApiResponse<List<GetDependentDto>>>> GetAll()
+        public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> GetAll()
         {
-            throw new NotImplementedException();
+            var dependents = await _dependentsService.GetAllAsync();
+            return HandleResponse(dependents);
         }
 
         [SwaggerOperation(Summary = "Add dependent")]
         [HttpPost]
-        public async Task<ActionResult<ApiResponse<List<AddDependentWithEmployeeIdDto>>>> AddDependent(AddDependentWithEmployeeIdDto newDependent)
+        public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> AddDependent(AddDependentWithEmployeeIdDto newDependent)
         {
-            throw new NotImplementedException();
+            var dependents = await _dependentsService.AddAsync(newDependent);
+            return HandleResponse(dependents);
         }
 
         [SwaggerOperation(Summary = "Update dependent")]
         [HttpPut("{id}")]
-        public async Task<ActionResult<ApiResponse<GetDependentDto>>> UpdateDependent(int id, UpdateDependentDto updatedDependent)
+        public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> UpdateDependent(int id, UpdateDependentDto updatedDependent)
         {
-            throw new NotImplementedException();
+            var dependents = await _dependentsService.UpdateAsync(id, updatedDependent);
+            return HandleResponse(dependents);
         }
 
         [SwaggerOperation(Summary = "Delete dependent")]
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ApiResponse<List<GetDependentDto>>>> DeleteDependent(int id)
+        public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> DeleteDependent(int id)
         {
-            throw new NotImplementedException();
+            var dependents = await _dependentsService.DeleteAsync(id);
+            return HandleResponse(dependents);
+        }
+
+        //TODO moved to shared base controller
+        private static ApiResponse<T> HandleResponse<T>(T data)
+        {
+            return new ApiResponse<T>
+            {
+                Data = data,
+                Success = true
+            };
         }
     }
 }

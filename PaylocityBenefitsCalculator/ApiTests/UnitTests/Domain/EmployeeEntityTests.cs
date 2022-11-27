@@ -111,6 +111,4 @@ namespace ApiTests.UnitTests.Domain
             DateOfBirth = DateTime.Today.AddYears(-20)
         };
     }
-
-
 }
