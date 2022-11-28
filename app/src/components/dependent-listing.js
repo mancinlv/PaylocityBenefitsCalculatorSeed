@@ -7,8 +7,8 @@ const DependentListing = (props) => {
     const [dependents, setDependents] = useState([]);
     const [editOpen, setAddOpen] = useState(false);
     const [currentEmployeeId, setEmployeeId] = useState(0);
-    //const [error, setError] = useState(null);
 
+    //known issue: React Hook useEffect has missing dependencies: 'props.currentEmployeeId' and 'props.dependents'. Either include them or remove the dependency array. If 'setDependents' needs the current value of 'props.dependents', you can also switch to useReducer instead of useState and read 'props.dependents' in the reducer
     useEffect(() => {
         setDependents(props.dependents);
         setEmployeeId(props.currentEmployeeId);
