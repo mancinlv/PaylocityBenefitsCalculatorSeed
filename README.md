@@ -1,12 +1,16 @@
 # Lara's Comments
 
 API: 
-  Architecture: Quickly done DDD. When entities for an application have such clear business logic, I perfer to use a variation of this architecture, keeping busines logic on the enties themselves, though this can sometimes cause some bloat.
-  Validation: I had no time to implement any validation, though I would have used Fluent Validation if I had.
-  Various things of note: I decided to keep the state management at the repo level for this project, thus making the return objects, and  building the, a bit awkard and redundant. I have little, and bad, error handling in the project, and I did not have time to implement several things that would have reduced repeated code - an interface for the crud operations, a base controller. I have noted some thoroughout the code. Also, the paylocity nuget packages were unavailable, so I replaced them all with the npm registry in the package.lock.json.
+
+  **Architecture**: Quickly done DDD. When entities for an application have such clear business logic, I perfer to use a variation of this architecture, keeping busines logic on the enties themselves, though this can sometimes cause some bloat.
+  
+  **Validation**: I had no time to implement any validation, though I would have used Fluent Validation if I had.
+  
+  **Various things of note**: I decided to keep the state management at the repo level for this project, thus making the return objects, and  building the, a bit awkard and redundant. I have little, and bad, error handling in the project, and I did not have time to implement several things that would have reduced repeated code - an interface for the crud operations, a base controller. I have noted some thoroughout the code. Also, the paylocity nuget packages were unavailable, so I replaced them all with the npm registry in the package.lock.json.
 
 React app: 
-  Architecture: I created a structure with components, models, services, and utils. With more time I would have added a store to handle state management.
+  **Architecture**: I created a structure with components, models, services, and utils. With more time I would have added a store to handle state management.
+  
   I would have liked to have converted this project to use TS, especially to allow for it to be strongly typed.
   
 ## To Run
