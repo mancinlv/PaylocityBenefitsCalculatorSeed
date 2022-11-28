@@ -1,4 +1,4 @@
-import {baseUrl} from "../Constants"
+import {baseUrl} from "../helpers/constants"
 
 const employeeControllerBase = '/api/v1/Employees'
 
@@ -55,6 +55,16 @@ export async function addEmployee(employee){
 
 export async function getPaycheck(id){
     const raw = await fetch(`${baseUrl}${employeeControllerBase}/${id}/paycheck`,
+        {
+            method: 'GET'
+        }
+    );
+    const response = await raw.json();
+    return response;
+}
+
+export async function getEmployeeDependents(id){
+    const raw = await fetch(`${baseUrl}${employeeControllerBase}/${id}/dependents`,
         {
             method: 'GET'
         }

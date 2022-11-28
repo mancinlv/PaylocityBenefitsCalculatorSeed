@@ -108,14 +108,15 @@ namespace Application
         //would never have these ids set this way w/ db
         private GetEmployeeDto ToEmployeeDto(AddEmployeeDto employee, int maxEmployeeId, int maxDependentId)
         {
+            var newEmployeeId = ++maxEmployeeId;
             return new GetEmployeeDto
             {
-                Id = ++maxEmployeeId,
+                Id = newEmployeeId,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
                 DateOfBirth = employee.DateOfBirth,
                 Salary = employee.Salary,
-                Dependents = MapDependents(employee.Dependents, maxDependentId)
+                Dependents = MapDependents(employee.Dependents, maxDependentId, newEmployeeId)
             };
         }
 
@@ -124,6 +125,7 @@ namespace Application
         {
             return new GetEmployeeDto
             {
+                
                 Id = employee.Id,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
@@ -138,6 +140,7 @@ namespace Application
             return new GetDependentDto
             {
                 Id = x.Id,
+                EmployeeId = x.EmployeeId,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 DateOfBirth = x.DateOfBirth,
@@ -146,7 +149,7 @@ namespace Application
         }
 
         //choosing to return empty list rather than null
-        private IList<GetDependentDto>? MapDependents(IList<AddDependentDto> dependents, int maxDependentId)
+        private IList<GetDependentDto>? MapDependents(IList<AddDependentDto> dependents, int maxDependentId, int newEmployeeId)
         {
             var dependentsDto = new List<GetDependentDto>();
             if (dependents == null) return dependentsDto;
@@ -155,6 +158,7 @@ namespace Application
                 var d = new GetDependentDto
                 {
                     Id = ++maxDependentId,
+                    EmployeeId = newEmployeeId,
                     FirstName = dependent.FirstName,
                     LastName = dependent.LastName,
                     DateOfBirth = dependent.DateOfBirth,

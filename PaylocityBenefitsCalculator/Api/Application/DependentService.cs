@@ -47,7 +47,7 @@ namespace Application
         public async Task<IList<GetDependentDto>> GetAllByEmployeeIdAsync(int employeeId)
         {
             var employeeDependents = await _dependentRepository.GetAllByEmployeeIdAsync(employeeId);
-            return employeeDependents.Select(x => ToDependentDto(x)).ToList();
+            return employeeDependents?.Select(x => ToDependentDto(x)).ToList();
         }
 
         //TODO refactor; message if new relationship cannot be added -LVM

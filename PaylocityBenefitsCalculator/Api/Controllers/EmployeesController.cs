@@ -12,10 +12,13 @@ namespace Api.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IDependentService _dependentService;
 
-        public EmployeesController(IEmployeeService employeeService)
+        public EmployeesController(IEmployeeService employeeService,
+            IDependentService dependentService)
         {
             _employeeService = employeeService;
+            _dependentService = dependentService;
         }
 
         [SwaggerOperation(Summary = "Get employee by id")]
@@ -72,12 +75,13 @@ namespace Api.Controllers
             return HandleResponse(paycheck);
         }
 
-        //Might put this in another controller
+        //Might put this in another controller - LVM
         [SwaggerOperation(Summary = "Get all dependents for given employee")]
         [HttpGet("{id}/dependents")]
-        public async Task<ActionResult<ApiResponse<List<GetDependentDto>>>> GetAllEmployeeDependents(int employeeId)
+        public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> GetAllEmployeeDependents(int id)
         {
-            throw new NotImplementedException();
+            var dependents = await _dependentService.GetAllByEmployeeIdAsync(id);
+            return HandleResponse(dependents);
         }
 
         //TODO moved to shared base controller

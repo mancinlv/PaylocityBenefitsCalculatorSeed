@@ -1,8 +1,8 @@
 import React from "react";
 import { format } from 'date-fns';
-import { currencyFormat } from "../Constants";
+import { currencyFormat } from "../helpers/constants";
 import PaycheckModal from "./paycheck.modal";
-import AddEditEmployeeModal from "./addeditEmployee.modal";
+import AddEditEmployeeModal from "./add-edit-employee.modal";
 
 const Employee = (props) => {
     const firstName = props.firstName || '';
@@ -35,6 +35,10 @@ const Employee = (props) => {
         setEditOpen(false);
     }
 
+    function showDependents(){
+        props.onHandleDependents(props);
+    }
+
     return (
         <tr>
             <th scope="row">{props.id}</th>
@@ -64,6 +68,7 @@ const Employee = (props) => {
                 <button onClick={openPaycheckModal}>Paycheck</button>
 
             </td>
+            <td><button onClick={showDependents}>Dependents</button></td>
             <td><button className="btn btn-danger btn-sm" onClick={(e) => props.onDelete(e)}>Delete</button></td>
         </tr>
     );
