@@ -6,9 +6,9 @@ namespace Api.Domain.Dependent.Models
     public class DependentEntity : Person
     {
         public int Id { get; set; }
-        public int EmployeeId { get; set; } // FK
+        public int EmployeeId { get; set; }
         public Relationship Relationship { get; set; }
-        // public Employee? Employee { get; set; } no
+        // public Employee? Employee { get; set; } not needed
 
         public bool IsOverFiftyYears()
         {
@@ -24,7 +24,6 @@ namespace Api.Domain.Dependent.Models
             var existingNonChildRelationship = existing?.FirstOrDefault(y => y.Relationship == Relationship.Spouse || y.Relationship == Relationship.DomesticPartner);
             if (existingNonChildRelationship != null && existingNonChildRelationship.Id != Id) return false;
             return true;
-            return existingNonChildRelationship == null ? true : false; // can never add more than 1 spouse or partnership
         }
     }
 }

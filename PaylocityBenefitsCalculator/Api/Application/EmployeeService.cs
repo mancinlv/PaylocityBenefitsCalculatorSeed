@@ -32,7 +32,6 @@ namespace Application
         {
             EmployeeEntity employee = await _employeeRepository.GetAsync(id);
             var dependents = await _dependentRepository.GetAllByEmployeeIdAsync(id);
-            //TODO move mapping
             //TODO fix list type https://medium.com/developers-arena/ienumerable-vs-icollection-vs-ilist-vs-iqueryable-in-c-2101351453db
             return ToEmployeeDto(employee, dependents);
         }
@@ -54,7 +53,7 @@ namespace Application
         }
 
 
-        // Assuming that employee id does exist. Otherwise would handle not found/ null with some type of message -- LVM
+        // Assuming that employee id does exist. Otherwise would handle not found/ null with some type of message
         public async Task<IList<GetEmployeeDto>> UpdateAsync(int id, UpdateEmployeeDto employee)
         {
             IList<EmployeeEntity> employees = await _employeeRepository.GetAllAsync();
@@ -105,6 +104,7 @@ namespace Application
             return paycheck;
         }
 
+        //TODO move mapping
         //would never have these ids set this way w/ db
         private GetEmployeeDto ToEmployeeDto(AddEmployeeDto employee, int maxEmployeeId, int maxDependentId)
         {

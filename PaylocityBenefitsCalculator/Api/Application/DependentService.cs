@@ -4,15 +4,15 @@ using Api.Dtos.Dependent;
 
 namespace Application
 {
-    // TODO add CRUD interface w/ generic? -LVM
-    public interface ICRUD
-    {
-        Task<T> GetAsync<T>(int id);
-        Task<IList<T>> GetAllAsync<T>();
-        Task<IList<T>> AddAsync<T>(T request);
-        Task<IList<T>> UpdateAsync<T>(int id, T request);
-        Task<IList<T>> DeleteAsync<T>(int id);
-    }
+    // TODO add CRUD interface w/ generics?
+    //public interface ICRUD
+    //{
+    //    Task<T> GetAsync<T>(int id);
+    //    Task<IList<T>> GetAllAsync<T>();
+    //    Task<IList<T>> AddAsync<T>(T request);
+    //    Task<IList<T>> UpdateAsync<T>(int id, T request);
+    //    Task<IList<T>> DeleteAsync<T>(int id);
+    //}
 
     public interface IDependentService
     {
