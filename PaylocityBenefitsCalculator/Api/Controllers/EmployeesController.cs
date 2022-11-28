@@ -1,7 +1,8 @@
-﻿using Api.Dtos.Dependent;
+﻿using Api.Domain.Dependent.Interfaces;
+using Api.Domain.Employee.Interfaces;
+using Api.Dtos.Dependent;
 using Api.Dtos.Employee;
 using Api.Models;
-using Application;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 

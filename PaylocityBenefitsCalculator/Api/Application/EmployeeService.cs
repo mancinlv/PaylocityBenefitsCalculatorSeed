@@ -7,15 +7,6 @@ using Api.Dtos.Employee;
 
 namespace Application
 {
-    public interface IEmployeeService
-    {
-        Task<GetEmployeeDto> GetAsync(int id);
-        Task<IList<GetEmployeeDto>> GetAllAsync();
-        Task<IList<GetEmployeeDto>> AddAsync(AddEmployeeDto employee);
-        Task<IList<GetEmployeeDto>> UpdateAsync(int id, UpdateEmployeeDto employee);
-        Task<IList<GetEmployeeDto>> DeleteAsync(int id);
-        Task<PaycheckDto> GetBiMonthlyPaycheckAsync(int employeeId);
-    }
 
     public class EmployeeService : IEmployeeService
     {

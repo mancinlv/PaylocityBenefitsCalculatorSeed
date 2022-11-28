@@ -1,6 +1,6 @@
-﻿using Api.Dtos.Dependent;
+﻿using Api.Domain.Dependent.Interfaces;
+using Api.Dtos.Dependent;
 using Api.Models;
-using Application;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
