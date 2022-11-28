@@ -5,9 +5,6 @@ const dependentControllerBase = '/api/v1/Dependents'
 export async function deleteDependent(id){
     const raw = await fetch(`${baseUrl}${dependentControllerBase}/${id}`,
         {
-            headers: {
-                'Access-Control-Allow-Methods': 'DELETE',
-            },
             method: 'DELETE'
         }
     );

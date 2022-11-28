@@ -14,9 +14,6 @@ export async function getEmployee(id){
 export async function deleteEmployee(id){
     const raw = await fetch(`${baseUrl}${employeeControllerBase}/${id}`,
         {
-            headers: {
-                'Access-Control-Allow-Methods': 'DELETE',
-            },
             method: 'DELETE'
         }
     );
