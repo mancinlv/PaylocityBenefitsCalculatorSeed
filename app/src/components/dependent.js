@@ -10,7 +10,7 @@ const Dependent = (props) => {
 
     const [editOpen, setEditOpen] = React.useState(false);
 
-    //TODO handle this way better - LVM
+    //TODO handle this better - LVM
     function setRelationshipString(relationship){
         switch(relationship){
             case 1:

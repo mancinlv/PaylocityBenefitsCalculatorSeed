@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from 'react-modal';
 import {format} from 'date-fns';
-import { currencyFormat } from "../helpers/constants"; //TODO make this work with input fields - LVM
+import { currencyFormat } from "../utils/constants"; //TODO make this work with input fields - LVM
 import { addEmployee, updateEmployee } from "../services/employee.service";
 
 function AddEditEmployeeModal(props){

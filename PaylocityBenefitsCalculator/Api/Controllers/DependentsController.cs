@@ -24,7 +24,6 @@ namespace Api.Controllers
             return HandleResponse(dependent);
         }
 
-        // TODO want to get them by employee id? 
         [SwaggerOperation(Summary = "Get all dependents")]
         [HttpGet("")]
         public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> GetAll()
@@ -73,7 +72,7 @@ namespace Api.Controllers
             return HandleResponse(dependents);
         }
 
-        //TODO moved to shared base controller
+        //TODO moved to shared base controller - LVM
         private static ApiResponse<T> HandleResponse<T>(T data)
         {
             return new ApiResponse<T>

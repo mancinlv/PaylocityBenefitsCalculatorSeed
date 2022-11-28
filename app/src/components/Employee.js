@@ -1,6 +1,6 @@
 import React from "react";
 import { format } from 'date-fns';
-import { currencyFormat } from "../helpers/constants";
+import { currencyFormat } from "../utils/constants";
 import PaycheckModal from "./paycheck.modal";
 import AddEditEmployeeModal from "./add-edit-employee.modal";
 

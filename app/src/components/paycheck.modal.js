@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from 'react-modal'
 import { getPaycheck } from "../services/employee.service";
-import { currencyFormat } from "../helpers/constants";
+import { currencyFormat } from "../utils/constants";
 
 function PaycheckModal(props){
     const [paycheck, setPaycheck] = React.useState(null); // todo add type

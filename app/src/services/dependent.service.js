@@ -1,4 +1,4 @@
-import {baseUrl} from "../helpers/constants"
+import {baseUrl} from "../utils/constants"
 
 const dependentControllerBase = '/api/v1/Dependents'
 

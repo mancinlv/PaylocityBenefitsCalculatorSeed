@@ -1,4 +1,4 @@
-import {baseUrl} from "../helpers/constants"
+import {baseUrl} from "../utils/constants"
 
 const employeeControllerBase = '/api/v1/Employees'
 
@@ -80,12 +80,4 @@ export async function getAllEmployees() {
     });
     const response = await raw.json();
     return response;
-    // if (response.success) {
-    //     //setEmployees(response.data);
-    //     //setError(null);
-    // }
-    // else {
-    //     //setEmployees([]);
-    //     //setError(response.error);
-    // }
 };

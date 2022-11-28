@@ -60,7 +60,7 @@ const EmployeeListing = () => {
         setCurrentEmployeeDependents([]);
     }
 
-// This is really bad, but I didn't have time to do something more sophisticated : / - LVM
+    // This is conditional rendering is bad : / - LVM
     if(showEmployees){
         return (
             <div className="employee-listing">
