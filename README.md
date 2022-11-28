@@ -9,10 +9,10 @@ React app:
   Architecture: I created a structure with components, models, services, and utils. With more time I would have added a store to handle state management.
   I would have liked to have converted this project to use TS, especially to allow for it to be strongly typed.
   
-# To Run
+## To Run
   To run the API from Visual Studio, set the startup project to API and run.
   
-  To run the React app, from the app folder run "npm start".
+  To run the React app, from the app folder, run <code>npm start</code>.
 
 # What is this?
 
