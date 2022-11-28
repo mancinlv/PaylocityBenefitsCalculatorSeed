@@ -60,8 +60,8 @@ namespace ApiTests.UnitTests.Domain
         [Fact]
         public static void CanAddRelationshipType_DuplicatePartner_ReturnsFalse()
         {
-            var originalDependent = new DependentEntity { Relationship = Relationship.DomesticPartner };
-            var newDependent = new DependentEntity { Relationship = Relationship.DomesticPartner };
+            var originalDependent = new DependentEntity { Relationship = Relationship.DomesticPartner, Id = 1 };
+            var newDependent = new DependentEntity { Relationship = Relationship.DomesticPartner, Id = 2 };
 
             var acutal = newDependent.CanAddRelationshipType(new List<DependentEntity> { originalDependent });
             acutal.Should().BeFalse();
@@ -70,11 +70,21 @@ namespace ApiTests.UnitTests.Domain
         [Fact]
         public static void CanAddRelationshipType_ExistingPartner_NewSpouse_ReturnsFalse()
         {
-            var originalDependent = new DependentEntity { Relationship = Relationship.DomesticPartner };
-            var newDependent = new DependentEntity { Relationship = Relationship.Spouse };
+            var originalDependent = new DependentEntity { Relationship = Relationship.DomesticPartner, Id = 1 };
+            var newDependent = new DependentEntity { Relationship = Relationship.Spouse, Id = 2};
 
             var acutal = newDependent.CanAddRelationshipType(new List<DependentEntity> { originalDependent });
             acutal.Should().BeFalse();
+        }
+
+        [Fact]
+        public static void CanAddRelationshipType_UpdatingExistingRelationship_ReturnsTrue()
+        {
+            var originalDependent = new DependentEntity { Relationship = Relationship.DomesticPartner, Id = 1 };
+            var newDependent = new DependentEntity { Relationship = Relationship.Spouse, Id = 1 };
+
+            var acutal = newDependent.CanAddRelationshipType(new List<DependentEntity> { originalDependent });
+            acutal.Should().BeTrue();
         }
 
         [Fact]

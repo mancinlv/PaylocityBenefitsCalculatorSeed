@@ -42,13 +42,3 @@ export async function addDependent(dependent){
     const response = await raw.json();
     return response;
 }
-
-// export async function getEmployeeDependents(id){
-//     const raw = await fetch(`${baseUrl}${dependentControllerBase}/${id}/dependents`,
-//         {
-//             method: 'GET'
-//         }
-//     );
-//     const response = await raw.json();
-//     return response;
-// }

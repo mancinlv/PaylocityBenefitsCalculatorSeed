@@ -22,6 +22,8 @@ namespace Api.Domain.Dependent.Models
         {
             if (Relationship == Relationship.Child) return true;
             var existingNonChildRelationship = existing?.FirstOrDefault(y => y.Relationship == Relationship.Spouse || y.Relationship == Relationship.DomesticPartner);
+            if (existingNonChildRelationship != null && existingNonChildRelationship.Id != Id) return false;
+            return true;
             return existingNonChildRelationship == null ? true : false; // can never add more than 1 spouse or partnership
         }
     }

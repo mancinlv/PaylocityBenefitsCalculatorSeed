@@ -50,7 +50,7 @@ namespace Application
             return employeeDependents?.Select(x => ToDependentDto(x)).ToList();
         }
 
-        //TODO refactor; message if new relationship cannot be added -LVM
+        // Handle invalid relationship type better -LVM
         public async Task<IList<GetDependentDto>> AddAsync(AddDependentWithEmployeeIdDto request)
         {
             var existingDependents = await _dependentRepository.GetAllByEmployeeIdAsync(request.EmployeeId);
@@ -61,21 +61,21 @@ namespace Application
                 var updatedDependents = await _dependentRepository.AddAsync(ToDependentDto(request));
                 return updatedDependents.Select(x => ToDependentDto(x)).ToList();
             }
-            return existingDependents.Select(x => ToDependentDto(x)).ToList();
+            throw new ArgumentException($"A {request.Relationship} cannot be added to Employee # {request.EmployeeId}");
         }
 
-        // only allow update if relationship can be updated; add message if new relationship cannot be added -LVM
+        // Handle invalid relationship type better -LVM
         public async Task<IList<GetDependentDto>> UpdateAsync(int id, UpdateDependentDto request)
         {
-            var existingDependents = await _dependentRepository.GetAllAsync();
-            var entity = ToDependentDto(request);
+            var existingDependents = await _dependentRepository.GetAllByEmployeeIdAsync(request.EmployeeId);
+            var entity = ToDependentDto(request, id);
             bool canAdd = entity.CanAddRelationshipType(existingDependents);
             if (canAdd)
             {
-                var updatedDependents = await _dependentRepository.UpdateAsync(ToDependentDto(request));
+                var updatedDependents = await _dependentRepository.UpdateAsync(ToDependentDto(request, id));
                 return updatedDependents.Select(x => ToDependentDto(x)).ToList();
             }
-            return existingDependents.Select(x => ToDependentDto(x)).ToList();
+            throw new ArgumentException($"A {request.Relationship} cannot be added to Employee # {request.EmployeeId}");
         }
 
         public async Task<IList<GetDependentDto>> DeleteAsync(int id)
@@ -92,14 +92,17 @@ namespace Application
                 EmployeeId = dependent.EmployeeId,
                 FirstName = dependent.FirstName,
                 LastName = dependent.LastName,
-                Relationship = dependent.Relationship
+                Relationship = dependent.Relationship,
+                DateOfBirth = dependent.DateOfBirth,
             };
         }
 
-        private DependentEntity ToDependentDto(UpdateDependentDto dependent)
+        private DependentEntity ToDependentDto(UpdateDependentDto dependent, int id)
         {
             return new DependentEntity
             {
+                Id = id,
+                EmployeeId = dependent.EmployeeId,
                 FirstName = dependent.FirstName,
                 LastName = dependent.LastName,
                 Relationship = dependent.Relationship
@@ -114,7 +117,9 @@ namespace Application
                 EmployeeId = dependent.EmployeeId,
                 FirstName = dependent.FirstName,
                 LastName = dependent.LastName,
-                Relationship = dependent.Relationship
+                Relationship = dependent.Relationship,
+                DateOfBirth = dependent.DateOfBirth
+
             };
         }
     }

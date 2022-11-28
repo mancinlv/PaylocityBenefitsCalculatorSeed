@@ -1,11 +1,13 @@
 import React from "react";
 import { format } from 'date-fns';
+import AddEditDependentModal from './add-edit-dependent.modal';
 
 const Dependent = (props) => {
     const firstName = props.data.firstName || '';
     const lastName = props.data.lastName || '';
     const dateOfBirth = format(new Date(props.data.dateOfBirth), 'yyyy-MM-dd');
     const relationship = setRelationshipString(props.data.relationship);
+
     const [editOpen, setEditOpen] = React.useState(false);
 
     //TODO handle this way better - LVM
@@ -19,27 +21,23 @@ const Dependent = (props) => {
                 return 'Child'
         }
     }
-    // function openPaycheckModal(){
-    //     setIsOpen(true);
-    // }
 
-    // function openEditModal(){
-    //     setEditOpen(true);
-    // }
+    function openEditModal(){
+        setEditOpen(true);
+    }
 
-    // function handleCloseModal(event){
-    //     setIsOpen(false);
-    //     setEditOpen(false);
-    // }
+    function handleCloseModal(event){
+        setEditOpen(false);
+    }
 
-    // function handleAfterOpen(event, data){
-    //     console.log(event, data);
-    // }
+    function handleAfterOpen(event, data){
+        console.log(event, data);
+    }
     
-    // function handleAfterEdit(data){
-    //     props.onUpdateDependent(data);
-    //     setEditOpen(false);
-    // }
+    function handleAfterEdit(data){
+        props.onUpdateDependent(data);
+        setEditOpen(false);
+    }
 
     return (
         <tr>
@@ -49,14 +47,15 @@ const Dependent = (props) => {
             <td>{dateOfBirth}</td>
             <td>{relationship}</td>
             <td>
-                {/* <AddEditEmployeeModal 
-                data={props}
+                <AddEditDependentModal 
+                data={props.data}
+                employeeId={props.data.employeeId}
                 IsModalOpen={editOpen}
                 onCloseModal={handleCloseModal}
                 onAfterOpen={handleAfterOpen}
-                onSaveEmployee={handleAfterEdit}
+                onSave={handleAfterEdit}
                 />
-                <button onClick={openEditModal}>Edit</button> */}
+                <button onClick={openEditModal}>Edit</button>
 
             </td>
             <td><button className="btn btn-danger btn-sm" onClick={(e) => props.onDelete(e)}>Delete</button></td>

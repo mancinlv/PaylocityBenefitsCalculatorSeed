@@ -37,16 +37,32 @@ namespace Api.Controllers
         [HttpPost]
         public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> AddDependent(AddDependentWithEmployeeIdDto newDependent)
         {
-            var dependents = await _dependentsService.AddAsync(newDependent);
-            return HandleResponse(dependents);
+            try
+            {
+                var dependents = await _dependentsService.AddAsync(newDependent);
+                return HandleResponse(dependents);
+            }
+            catch (ArgumentException ex)
+            {
+                return ErrorResponse<IList<GetDependentDto>>(null, ex.Message);
+            }
+            
         }
 
         [SwaggerOperation(Summary = "Update dependent")]
         [HttpPut("{id}")]
         public async Task<ActionResult<ApiResponse<IList<GetDependentDto>>>> UpdateDependent(int id, UpdateDependentDto updatedDependent)
         {
-            var dependents = await _dependentsService.UpdateAsync(id, updatedDependent);
-            return HandleResponse(dependents);
+            try
+            {
+                var dependents = await _dependentsService.UpdateAsync(id, updatedDependent);
+                return HandleResponse(dependents);
+            }
+            catch (ArgumentException ex)
+            {
+                return ErrorResponse<IList<GetDependentDto>>(null, ex.Message);
+            }
+            
         }
 
         [SwaggerOperation(Summary = "Delete dependent")]
@@ -64,6 +80,16 @@ namespace Api.Controllers
             {
                 Data = data,
                 Success = true
+            };
+        }
+
+        private static ApiResponse<T> ErrorResponse<T>(T data, string message)
+        {
+            return new ApiResponse<T>
+            {
+                Data = data,
+                Success = false,
+                Message = message
             };
         }
     }

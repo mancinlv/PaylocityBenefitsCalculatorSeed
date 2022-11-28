@@ -72,6 +72,7 @@ namespace Api.Infrastructure
                 AllDependents[index].FirstName = dependent.FirstName;
                 AllDependents[index].LastName = dependent.LastName;
                 AllDependents[index].Relationship = dependent.Relationship;
+                AllDependents[index].DateOfBirth = dependent.DateOfBirth;
             }
             return AllDependents;
         }

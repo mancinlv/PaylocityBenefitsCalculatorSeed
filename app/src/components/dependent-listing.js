@@ -69,7 +69,7 @@ const DependentListing = (props) => {
                 <Dependent
                     key={e.id}
                     data={e}
-                    onUpdateDependents={HandleDependentsUpdate}
+                    onUpdateDependent={HandleDependentsUpdate}
                     onDelete={(ev) => handleDeleteDependent(e.id)}
                 />
             ))}
