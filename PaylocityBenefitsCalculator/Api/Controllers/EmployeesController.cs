@@ -69,6 +69,7 @@ namespace Api.Controllers
             return HandleResponse(employees);
         }
 
+        [SwaggerOperation(Summary = "Get paycheck for given employee")]
         [HttpGet("{id}/paycheck")]
         public async Task<ActionResult<ApiResponse<PaycheckDto>>> GetPaycheck(int id)
         {
